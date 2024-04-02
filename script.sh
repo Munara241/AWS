@@ -26,3 +26,9 @@ sg=$(aws ec2 create-security-group --group-name EC2SecurityGroup --description "
 
 aws ec2 authorize-security-group-ingress --group-id $sg --protocol tcp --port 22 --cidr 0.0.0.0/0 --region $region
 
+
+key_pair=$(aws ec2 create-key-pair --key-name EC2KeyPair --query "KeyMaterial" --output text > EC2KeyPair.pem)
+
+sudo chmod 400 $key_pair
+
+aws ec2 run-instances --image-id ami-087c17d1fe0178315 --count 1 --instance-type t2.micro --key-name EC2KeyPair  --security-group-ids $sg --subnet-id $subnet_id --associate-public-ip-address --tag-specifications ResourceType=instance,Tags=[{Key=Name,Value=Demo-EC2}]
