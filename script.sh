@@ -1,12 +1,16 @@
 !#/bin/bash
 
-region="us-east-1"
+region="us-east-2"
 vpc_cidr="10.0.0.0/16"
 subnet1_cidr="10.0.1.0/24"
+subnet2_cidr="10.0.2.0/24"
+subnet3_cidr="10.0.3.0/24"
 
 vpc_id=$(aws ec2 create-vpc --cidr-block $vpc_cidr --region $region --query Vpc.VpcId --output text)
 
 subnet_id=$(aws ec2 create-subnet --vpc-id $vpc_id --cidr-block $subnet1_cidr --region $region --query Subnet.SubnetId --output text)
+subnet_id=$(aws ec2 create-subnet --vpc-id $vpc_id --cidr-block $subnet2_cidr --region $region --query Subnet.SubnetId --output text)
+subnet_id=$(aws ec2 create-subnet --vpc-id $vpc_id --cidr-block $subnet3_cidr --region $region --query Subnet.SubnetId --output text)
 
 igw_id=$(aws ec2 create-internet-gateway --region $region --query InternetGateway.InternetGatewayId --output text)
 
